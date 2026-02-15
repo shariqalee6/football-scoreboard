@@ -3,7 +3,7 @@
 composer.lock
 
 # PHPUnit cache
-phpunit.result.cache
+.phpunit.result.cache
 
 # Build and coverage outputs
 /build/
