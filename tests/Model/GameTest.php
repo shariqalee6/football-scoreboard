@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Model;
 
 use App\Domain\Exception\InvalidScoreException;
+use App\Domain\Exception\InvalidTeamException;
 use App\Domain\Model\Game;
 use PHPUnit\Framework\TestCase;
 
@@ -67,5 +68,40 @@ final class GameTest extends TestCase
 
         $game = new Game('Germany', 'France');
         $game->updateScore(0, -1);
+    }
+
+    public function testConstructorThrowsOnEmptyHomeTeam(): void
+    {
+        $this->expectException(InvalidTeamException::class);
+
+        new Game('', 'Brazil');
+    }
+
+    public function testConstructorThrowsOnEmptyAwayTeam(): void
+    {
+        $this->expectException(InvalidTeamException::class);
+
+        new Game('Brazil', '');
+    }
+
+    public function testConstructorThrowsOnWhitespaceOnlyTeam(): void
+    {
+        $this->expectException(InvalidTeamException::class);
+
+        new Game('   ', 'Brazil');
+    }
+
+    public function testConstructorThrowsOnSameTeams(): void
+    {
+        $this->expectException(InvalidTeamException::class);
+
+        new Game('Brazil', 'Brazil');
+    }
+
+    public function testConstructorThrowsOnSameTeamsCaseInsensitive(): void
+    {
+        $this->expectException(InvalidTeamException::class);
+
+        new Game('brazil', 'BRAZIL');
     }
 }

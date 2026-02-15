@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Exception\InvalidScoreException;
+use App\Domain\Exception\InvalidTeamException;
+use App\Domain\Model\TeamName;
 
 final class Game
 {
@@ -15,6 +17,7 @@ final class Game
 
     public function __construct(string $homeTeam, string $awayTeam)
     {
+        $this->validateTeams($homeTeam, $awayTeam);
         $this->homeTeam = trim($homeTeam);
         $this->awayTeam = trim($awayTeam);
     }
@@ -58,4 +61,23 @@ final class Game
         $this->awayScore = $awayScore;
     }
 
+    private function validateTeams(string $homeTeam, string $awayTeam): void
+    {
+        if (trim($homeTeam) === '') {
+            throw InvalidTeamException::emptyName();
+        }
+
+        if (trim($awayTeam) === '') {
+            throw InvalidTeamException::emptyName();
+        }
+
+        $normalizedHome = TeamName::normalize($homeTeam);
+        $normalizedAway = TeamName::normalize($awayTeam);
+
+        if ($normalizedHome === $normalizedAway) {
+            throw InvalidTeamException::sameTeams(trim($homeTeam));
+        }
+    }
+
+    
 }
