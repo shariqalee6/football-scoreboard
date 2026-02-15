@@ -12,6 +12,9 @@ use App\Domain\Model\TeamName;
 
 final class Scoreboard implements ScoreboardInterface
 {
+    /** Character used only for indexing; team names cannot contain NUL in PHP. */
+    private const KEY_SEPARATOR = "\0";
+
     /** @var array<string, Game> */
     private array $games = [];
 
@@ -84,8 +87,9 @@ final class Scoreboard implements ScoreboardInterface
         }
     }
 
+    /** Builds an internal lookup key from normalized home/away names. */
     private function buildKey(string $homeTeam, string $awayTeam): string
     {
-        return TeamName::normalize($homeTeam) . "\0" . TeamName::normalize($awayTeam);
+        return TeamName::normalize($homeTeam) . self::KEY_SEPARATOR . TeamName::normalize($awayTeam);
     }
 }

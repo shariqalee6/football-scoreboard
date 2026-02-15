@@ -8,6 +8,7 @@ use App\Domain\Exception\GameAlreadyExistsException;
 use App\Domain\Exception\GameNotFoundException;
 use App\Domain\Exception\InvalidScoreException;
 use App\Domain\Exception\InvalidTeamException;
+use App\Domain\Model\GameSummary;
 use App\Domain\Service\Scoreboard;
 use PHPUnit\Framework\TestCase;
 
@@ -101,13 +102,13 @@ final class ScoreboardTest extends TestCase
         self::assertSame(5, $summary[0]->getAwayScore());
     }
 
-    public function testSummaryReturnsReadModelWithoutUpdateOperation(): void
+    public function testSummaryReturnsGameSummaryWithCorrectTotal(): void
     {
         $this->scoreboard->startGame('Mexico', 'Canada');
         $this->scoreboard->updateScore('Mexico', 'Canada', 1, 2);
         $summary = $this->scoreboard->getSummary();
 
-        self::assertFalse(method_exists($summary[0], 'updateScore'));
+        self::assertInstanceOf(GameSummary::class, $summary[0]);
         self::assertSame(3, $summary[0]->getTotalScore());
     }
 

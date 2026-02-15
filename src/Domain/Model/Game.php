@@ -18,8 +18,8 @@ final class Game
     public function __construct(string $homeTeam, string $awayTeam)
     {
         $this->validateTeams($homeTeam, $awayTeam);
-        $this->homeTeam = trim($homeTeam);
-        $this->awayTeam = trim($awayTeam);
+        $this->homeTeam = TeamName::normalizeForDisplay($homeTeam);
+        $this->awayTeam = TeamName::normalizeForDisplay($awayTeam);
     }
 
     public function getHomeTeam(): string
@@ -63,21 +63,11 @@ final class Game
 
     private function validateTeams(string $homeTeam, string $awayTeam): void
     {
-        if (trim($homeTeam) === '') {
-            throw InvalidTeamException::emptyName();
-        }
-
-        if (trim($awayTeam) === '') {
-            throw InvalidTeamException::emptyName();
-        }
-
         $normalizedHome = TeamName::normalize($homeTeam);
         $normalizedAway = TeamName::normalize($awayTeam);
 
         if ($normalizedHome === $normalizedAway) {
-            throw InvalidTeamException::sameTeams(trim($homeTeam));
+            throw InvalidTeamException::sameTeams(TeamName::normalizeForDisplay($homeTeam));
         }
     }
-
-    
 }
