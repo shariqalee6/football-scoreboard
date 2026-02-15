@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Application\Command\ScoreboardDemoCommand;
+use App\Domain\Service\Scoreboard;
+use App\Domain\Service\ScoreboardInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$container = new ContainerBuilder();
+$container->register(ScoreboardInterface::class, Scoreboard::class);
+$container->autowire(ScoreboardDemoCommand::class)->setPublic(true);
+$container->compile();
+
+$application = new Application('Football Scoreboard');
+$application->add($container->get(ScoreboardDemoCommand::class));
+$application->run();
