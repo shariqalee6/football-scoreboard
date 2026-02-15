@@ -1,52 +1,39 @@
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+# Composer dependencies
+/vendor/
+composer.lock
 
-# Email spool folder
-/app/spool/*
+# PHPUnit cache
+phpunit.result.cache
 
-# Cache, session files and logs (Symfony3)
-/var/cache/*
-/var/logs/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
-!var/sessions/.gitkeep
+# Build and coverage outputs
+/build/
+coverage/
+.phpunit.cache/
 
-# Logs (Symfony4)
-/var/log/*
-!var/log/.gitkeep
+# Logs and cache (Symfony, generic)
+var/
+!var/.gitkeep
 
-# Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
-
-# Managed by Composer
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
+# Ignore all bin scripts except console
 /bin/*
 !bin/console
-!bin/symfony_requirements
-/vendor/
 
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
+# Ignore IDE/editor files
+*.swp
+*.swo
+*.idea/
+*.vscode/
+.DS_Store
 
-# PHPUnit
-/app/phpunit.xml
-/phpunit.xml
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Build data
-/build/
+# Ignore environment files
+.env
+.env.local
+.env.*.local
 
-# Composer PHAR
-/composer.phar
-
-# Backup entities generated with doctrine:generate:entities command
-**/Entity/*~
-
-# Embedded web-server pid file
-/.web-server-pid
+# Ignore backup files
+*~
