@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Model;
 
+use App\Domain\Exception\InvalidScoreException;
 use App\Domain\Model\Game;
 use PHPUnit\Framework\TestCase;
 
@@ -52,4 +53,19 @@ final class GameTest extends TestCase
         self::assertSame(0, $game->totalScore());
     }
 
+    public function testUpdateScoreThrowsOnNegativeHomeScore(): void
+    {
+        $this->expectException(InvalidScoreException::class);
+
+        $game = new Game('Germany', 'France');
+        $game->updateScore(-1, 0);
+    }
+
+    public function testUpdateScoreThrowsOnNegativeAwayScore(): void
+    {
+        $this->expectException(InvalidScoreException::class);
+
+        $game = new Game('Germany', 'France');
+        $game->updateScore(0, -1);
+    }
 }

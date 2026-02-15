@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Exception\InvalidScoreException;
+
 final class Game
 {
     private string $homeTeam;
@@ -44,9 +46,16 @@ final class Game
 
     public function updateScore(int $homeScore, int $awayScore): void
     {
+        if ($homeScore < 0) {
+            throw InvalidScoreException::negativeScore($homeScore);
+        }
+
+        if ($awayScore < 0) {
+            throw InvalidScoreException::negativeScore($awayScore);
+        }
 
         $this->homeScore = $homeScore;
         $this->awayScore = $awayScore;
     }
-    
+
 }
